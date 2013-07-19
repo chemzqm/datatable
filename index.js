@@ -157,10 +157,10 @@ DataTable.prototype.onsort = function(type, ev){
  * @api public
  */
 
-DataTable.prototype.sort = function(col, dir, type){
+DataTable.prototype.sort = function(col, dir){
   var th = this.el.find('thead tr th').eq(col);
   var el = th.find('a');
-
+  var type = this.columns[col][2];
   this.el.find('thead th a').removeClass('asc desc');
   el[(dir > 0 ? 'add' : 'remove') + 'Class']('asc');
   el[(dir < 0 ? 'add' : 'remove') + 'Class']('desc');
