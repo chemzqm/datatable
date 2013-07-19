@@ -184,6 +184,10 @@ DataTable.prototype.paginate = function(page, perpage){
   this.config.pager.perpage = perpage;
 
   var pager = new Pager;
+  var prev = pager.el.find('.prev a');
+  var next = pager.el.find('.next a');
+  prev.html('上一页');
+  next.html('下一页');
   pager.el.appendTo(this.el.find('tfoot td')[0]);
 
   this.el.find('tfoot td').append(
@@ -233,6 +237,9 @@ DataTable.prototype.replace = function(el){
   o(el).append(this.render());
 };
 
+function toNumber(value) {
+  return Number(value.toString().replace(/[,%]/g, ''));
+}
 /**
  * Sort the given array by col and dir
  *
@@ -247,11 +254,11 @@ function sortBy(arr, col, dir, type){
     var v1 = e1[col];
 
     switch(type) {
-      case 'numeric':
-        v0 = Number(v0);
-        v1 = Number(v1);
+      case 'number':
+        v0 = toNumber(v0);
+        v1 = toNumber(v1);
         break;
-      case 'alpha':
+      case 'string':
         v0 = free(v0).trim();
         v1 = free(v1).trim();
         break;
