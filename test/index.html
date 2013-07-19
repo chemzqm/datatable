@@ -11,59 +11,74 @@
         font: 300 12px "Helvetica Neue", Helvetica, Arial;
         min-height: 1000px;
       }
-
-      .datatable-component table tr td,
-      .datatable-component table tr th {
-        font-weight: normal;
-        padding: 3px 15px;
-        border: 1px solid #888;
-        font-size: 13px;
+      #placeholder {
+        width: 500px;
+      }
+      .shows-indicator h2{
+        font-size: 16px;
+        font-weight: bold;
       }
 
-      .datatable-component table tr th a {
-        color: white;
+      .shows-table table {
+        width: 100%;
+        border-spacing: 8px;
+        border-collapse: separate;
       }
 
-      .datatable-component table thead tr {
-        background-color: #555;
-        color: white;
+      .shows-table table th, .shows-table table td {
+        text-align: right;
+        border-radius: 5px;
+        padding: 4px 10px;
+        margin: 5px;
+        background-color: #F4F4F4;
       }
 
+      .shows-table table td.h1 {
+        background-color: #70AD2C;
+      }
+
+      .shows-table table td.h2 {
+        background-color: #E09513;
+      }
+
+      .shows-table table td.h3 {
+        background-color: #36A7BD;
+      }
+
+      .shows-table table tfoot {
+        line-height: 20px;
+      }
+      .shows-table table a {
+        text-decoration: none;
+        color: #000;
+      }
       .datatable-component table thead tr th a.sort {
         user-select: none;
         cursor: pointer;
         position: relative;
       }
 
-      .datatable-component table tr th {
-        padding-right: 25px;
-      }
-
       .datatable-component table thead tr th a.sort:before {
         position: absolute;
         content: "\2B06";
         font-size: 9px;
-        right: -15px;
-        top: 1px;
+        right: -9px;
+        top: 4px;
         color: transparent;
       }
 
       .datatable-component table thead tr th a.sort.asc:before {
-        color: white;
+        color: #66f;
         content: "\2B06"
       }
 
       .datatable-component table thead tr th a.sort.desc:before {
-        color: white;
+        color: #66f;
         content: "\2B07"
       }
 
-      .datatable-component table tbody tr:nth-child(odd) {
-        background-color: #efe;
-      }
-
-      .datatable-component table tbody tr:nth-child(even) {
-        background-color: #ffe;
+      .datatable-component ul.pager {
+        text-align: left;
       }
 
       .datatable-component ul.pager li {
@@ -94,7 +109,7 @@
     </style>
   </head>
   <body>
-    <div id="placeholder"></div>
+    <div id="placeholder" class="shows-table"></div>
 
     <script src="../build/build.js"></script>
     <script>
@@ -104,38 +119,30 @@
       // Create an instance
       var players = new DataTable()
         .header([
-          ['P', true, 'numeric'],
-          ['Equipo', true, 'alpha'],
-          'PJ',
+          ['P', true, 'number'],
+          ['Equipo', true, 'string'],
+          ['PJ', true, 'number'],
           'PG',
           'PE',
           'PP',
-          ['Pts', true, 'numeric']
+          ['Pts', true, 'number']
         ])
         .load([
-          [1, "NEWELL`S", 10, 6, 4, 0, 22],
-          [2, "RACING", 10, 6, 2, 2, 20],
-          [3, "<span>   BELGRANO</span>", 10, 5, 4, 1, 19],
-          [4, "VÉLEZ SARSFIELD", 10, 5, 2, 3, 17],
-          [5, "BOCA", 10, 5 , 2, 3, 17],
-          [7, "ESTUDIANTES", 10, 5, 1, 4, 16],
-          [8, "RIVER", 10, 4, 3, 3, 15],
-          [9, "COLÓN", 10, 4, 3, 3, 15],
-          [10, "LANÚS", 10, 4, 2, 4, 14],
-          [11, "ARGENTINOS", 10, 3, 4, 3, 13],
-          [12, "ATL. RAFAELA", 10, 3, 4, 3, 13],
-          [13, "ARSENAL", 10, 3, 3, 4, 12],
-          [14, "QUILMES", 10, 2, 5, 3, 11],
-          [15, "ALL BOYS", 10, 2, 4, 4, 10],
-          [16, "SAN MARTÍN (SJ)", 10, 3, 1, 6, 10],
-          [17, "INDEPENDIENTE", 10, 2, 4, 4, 10],
-          [19, "TIGRE", 10, 0, 6, 4, 6],
-          [20, "UNIÓN", 10, 0, 3, 7, 3]
+          [1, "NEWELL`S", '12%', 6, 4, 0, 22],
+          [2, "RACING", '18%', 6, 2, 2, 20],
+          [3, "<span>   BELGRANO", '14%', 5, 4, 1, 19],
+          [4, "VÉLEZ SARSFIELD", '11%', 5, 2, 3, 17],
+          [5, "BOCA", '1%', 5 , 2, 3, 17],
+          [7, "ESTUDIANTES", '2%', 5, 1, 4, 16],
+          [8, "RIVER", '3%', 4, 3, 3, 15],
+          [9, "COLÓN", '5%', 4, 3, 3, 15],
+          [10, "LANÚS", '21%', 4, 2, 4, 14],
+          [11, "ARGENTINOS", '22%', 3, 4, 3, 13],
+          [12, "ATL. RAFAELA", '4%', 3, 4, 3, 13],
+          [13, "ARSENAL", '1%', 3, 3, 4, 12]
         ])
-        .add([6, "GODOY CRUZ", 10, 5, 1, 4, 16])
-        .add([18, "SAN LORENZO", 10, 2, 4, 4, 10])
-        .paginate(1, 6)
-        .sort(6, -1)
+        .paginate(0, 6)
+        .sort(2, -1)
         .replace('#placeholder');
 
     </script>
