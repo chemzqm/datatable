@@ -1,9 +1,9 @@
-
+/*jshint -W116,-W069,-W098,-W003*/
 /**
  * Component dependencies
  */
 
-var o = require('jquery')
+var dom = require ('dom')
   , type = require('type')
   , free = require('tags-free')
   , Pager = require('pager');
@@ -21,14 +21,14 @@ module.exports = DataTable;
  */
 
 function DataTable(){
-  if (!(this instanceof DataTable)) return new DataTable;
+  if (!(this instanceof DataTable)) return new DataTable();
   this.config = {
     sort:   { col: 0, dir: 1 } ,
     pager:  { page: 0, perpage: 10 }
   };
 
   // get markup template
-  this.el = o(require('./template'));
+  this.el = dom(require('./template'));
   this.columns = [];
   this.rows = [];
   return this;
@@ -93,18 +93,29 @@ DataTable.prototype.column = function(column) {
     , sortType = 2
     , isstr = 'string' == type(column)
     , cssname = !isstr && column[sort] ? 'sort' : ''
+    , th = dom('<th>')
     , el;
 
-  var el = isstr ? o('<span>')
-                 : o('<a>', { href: '#', class: cssname })
-                    .click(this.onsort.bind(this, column[sortType] || 'numeric' ));
+  if(isstr) {
+    el = dom('<span>');
+    el.html( column );
+  } else {
+    el = dom('<a>');
+    el.href('#');
+    el.addClass(cssname);
+    el.html( column[title] )
+  }
+ 
 
-  o('<th>')
-    .append( el.html( isstr ? column : column[title] ) )
+
+  th.append( el.html( isstr ? column : column[title] ) )
     .appendTo( this.el.find('thead tr') );
 
   // add column to columns list
   this.columns.push(column)
+  th.attr('data-index', this.columns.length - 1);
+  th.append(el);
+  th.appendTo( this.el.find('thead tr') );
 
   // set colspan in footer element
   this.el.find('tfoot tr td').attr('colspan', this.columns.length);
@@ -125,8 +136,10 @@ DataTable.prototype.body = function(){
 
   this.el.find('tbody').empty();
   for (var j = ini, row = this.rows[ini]; j < end; j++, row = this.rows[j]) {
-    for (var i = 0, tr = o('<tr>'); i < row.length; i++) {
-      tr.append(o('<td>', { html: row[i] }));
+    for (var i = 0, tr = dom('<tr>'); i < row.length; i++) {
+      var td = dom('<td>');
+      td.html(row[i]);
+      tr.append(td);
     }
     this.el.find('tbody').append(tr);
   }
@@ -140,13 +153,13 @@ DataTable.prototype.body = function(){
  * @api public
  */
 
-DataTable.prototype.onsort = function(type, ev){
+DataTable.prototype.onsort = function(ev){
   ev.preventDefault();
-  var el = o(ev.target);
-  var th = el.closest('th');
-
-  var col = th.prevAll().length;
-  var dir = el.hasClass('asc') ? -1 : 1;
+  var el = dom(ev.target);
+  var th = dom(ev.target.parentNode);
+  var col = parseInt(th.attr('data-index'), 10);
+  var dir = el.hasClass('desc') ? 1 : -1;
+  var type = this.columns[col][2];
 
   this.sort(col, dir, type);
 };
@@ -158,10 +171,10 @@ DataTable.prototype.onsort = function(type, ev){
  */
 
 DataTable.prototype.sort = function(col, dir){
-  var th = this.el.find('thead tr th').eq(col);
+  var th = this.el.find('thead tr th').at(col);
   var el = th.find('a');
   var type = this.columns[col][2];
-  this.el.find('thead th a').removeClass('asc desc');
+  this.el.find('thead th a').removeClass(/(asc|desc)/);
   el[(dir > 0 ? 'add' : 'remove') + 'Class']('asc');
   el[(dir < 0 ? 'add' : 'remove') + 'Class']('desc');
 
@@ -183,20 +196,16 @@ DataTable.prototype.paginate = function(page, perpage){
   this.config.pager.page = page;
   this.config.pager.perpage = perpage;
 
-  var pager = new Pager;
-  var prev = pager.el.find('.prev a');
-  var next = pager.el.find('.next a');
-  prev.html('上一页');
-  next.html('下一页');
-  pager.el.appendTo(this.el.find('tfoot td')[0]);
+  var pager = this.pager = new Pager;
+  pager.el.appendTo(this.el.find('tfoot td'));
 
-  this.el.find('tfoot td').append(
-    pager
-    .total(this.rows.length)
-    .perpage(perpage || 10)
-    .select(page || 0)
-    .render()
-  );
+  pager
+  .total(this.rows.length)
+  .perpage(perpage || 10)
+  .select(page || 0)
+  .render()
+
+  pager.el.appendTo(this.el.find('tfoot td').get());
 
   // Emit `pager` event
   pager.on('show', this.onpager.bind(this));
@@ -234,7 +243,18 @@ DataTable.prototype.render = function(){
  */
 
 DataTable.prototype.replace = function(el){
-  o(el).append(this.render());
+  dom(el).empty();
+  dom(el).append(this.render());
+    //el.on('click', this.onsort.bind(this, column[sortType] || 'numeric' ));
+  this._onsort = this.onsort.bind(this);
+  dom(this.el).on('click', 'th > a', this._onsort);
+  return this;
+};
+
+DataTable.prototype.remove = function() {
+  this.pager.remove();
+  dom(this.el).off('click', 'th > a', this._onsort);
+  this.el.remove();
 };
 
 function toNumber(value) {
