@@ -6,6 +6,7 @@
 var dom = require ('dom')
   , type = require('type')
   , free = require('tags-free')
+  , Emitter = require('emitter')
   , Pager = require('pager');
 
 /**
@@ -34,6 +35,7 @@ function DataTable(){
   return this;
 }
 
+Emitter(DataTable.prototype);
 /**
  * Add new row to DataTable
  *
