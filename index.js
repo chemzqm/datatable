@@ -143,6 +143,7 @@ DataTable.prototype.body = function(){
     }
     this.el.find('tbody').append(tr);
   }
+  this.emit('update');
 };
 
 /**
