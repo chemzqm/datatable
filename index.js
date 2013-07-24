@@ -254,6 +254,7 @@ DataTable.prototype.replace = function(el){
 
 DataTable.prototype.remove = function() {
   this.pager.remove();
+  this.off();
   dom(this.el).off('click', 'th > a', this._onsort);
   this.el.remove();
 };
