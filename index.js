@@ -262,7 +262,7 @@ DataTable.prototype.remove = function() {
 };
 
 function toNumber(value) {
-  return Number(value.toString().replace(/[,%]/g, ''));
+  return Number(value.toString().replace(/[:,%]/g, ''));
 }
 /**
  * Sort the given array by col and dir
