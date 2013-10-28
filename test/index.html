@@ -16,16 +16,33 @@
       }
 
       .shows-table table {
-        width: 100%;
-        border-spacing: 8px;
+        border: 1px solid #dddddd;
         border-collapse: separate;
+        border-left: 0;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        border-spacing: 0;
+        max-width: 100%;
+        background-color: transparent;
       }
 
+      .shows-table tbody > tr:nth-child(odd) > td,
+      .shows-table tbody > tr:nth-child(odd) > th {
+        background-color: #f9f9f9;
+      }
       .shows-table table th, .shows-table table td {
-        text-align: right;
-        border-radius: 5px;
-        padding: 4px 10px;
-        margin: 5px;
+        padding: 10px 8px 6px 8px;
+        border-left: 1px solid #dddddd;
+        line-height: 20px;
+        text-align: left;
+        vertical-align: top;
+      }
+      .shows-table table td {
+        border-top: 1px solid #dddddd;
+      }
+
+      .shows-table table tfoot td{
         background-color: #F4F4F4;
       }
 
@@ -119,24 +136,25 @@
           ['P', true, 'number'],
           ['Equipo', true, 'string'],
           ['PJ', true, 'number'],
-          'PG',
+          ['PG', true, 'number'],
           'PE',
           'PP',
-          ['Pts', true, 'number']
+          ['Pts', true, 'number'],
+          'action'
         ])
         .load([
-          [1, "NEWELL`S", '12%', 6, 4, 0, 22],
-          [2, "RACING", '18%', 6, 2, 2, 20],
-          [3, "<span>   BELGRANO", '14%', 5, 4, 1, 19],
-          [4, "VÉLEZ SARSFIELD", '11%', 5, 2, 3, 17],
-          [5, "BOCA", '1%', 5 , 2, 3, 17],
-          [7, "ESTUDIANTES", '2%', 5, 1, 4, 16],
-          [8, "RIVER", '3%', 4, 3, 3, 15],
-          [9, "COLÓN", '5%', 4, 3, 3, 15],
-          [10, "LANÚS", '21%', 4, 2, 4, 14],
-          [11, "ARGENTINOS", '22%', 3, 4, 3, 13],
-          [12, "ATL. RAFAELA", '4%', 3, 4, 3, 13],
-          [13, "ARSENAL", '1%', 3, 3, 4, 12]
+            [1, "NEWELL`S", '12%', '00:01:12', 4, 0, 22, '<span>remove</span>'],
+          [2, "RACING", '18%', '00:11:12', 2, 2, 20, '<span>remove</span>'],
+          [3, "<span>   BELGRANO", '14%', '00:12:33', 4, 1, 19, '<span>remove</span>'],
+          [4, "VÉLEZ SARSFIELD", '11%', '00:12:44', 2, 3, 17, '<span>remove</span>'],
+          [5, "BOCA", '1%', '00:33:44' , 2, 3, 17, '<span>remove</span>'],
+          [7, "ESTUDIANTES", '2%', '00:22:33', 1, 4, 16, '<span>remove</span>'],
+          [8, "RIVER", '3%', '00:21:34', 3, 3, 15, '<span>remove</span>'],
+          [9, "COLÓN", '5%', '00:35:89', 3, 3, 15, '<span>remove</span>'],
+          [10, "LANÚS", '21%', '00:33:33', 2, 4, 14, '<span>remove</span>'],
+          [11, "ARGENTINOS", '22%', '00:19:19', 4, 3, 13, '<span>remove</span>'],
+          [12, "ATL. RAFAELA", '4%', '00:23:44', 4, 3, 13, '<span>remove</span>'],
+          [13, "ARSENAL", '1%', '00:34:55', 3, 4, 12, '<span>remove</span>']
         ])
         .paginate(0, 6)
         .sort(2, -1)
